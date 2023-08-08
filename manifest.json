@@ -24,7 +24,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://camorra.world/*"],
+      "matches": ["https://www.camorraworld.com/*"],
       "js": ["content.js"]
     }
   ],

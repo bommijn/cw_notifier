@@ -115,7 +115,7 @@ function translateOptionEvent(eventName){
 // Listen to the network request.... 
 browser.webRequest.onBeforeRequest.addListener(
     handleCompletedRequest,
-    { urls: ["https://camorra.world/apis/vip/index.php"] },
+    { urls: ["https://www.camorraworld.com/apis/vip/index.php"] },
     ["blocking"]
 );
 
