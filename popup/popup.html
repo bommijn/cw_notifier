@@ -1,0 +1,132 @@
+<!-- popup.html -->
+<!DOCTYPE html>
+<html class="mx-auto">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <title>Add-on Popup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background:#212529;
+    }
+
+    td{
+      text-align: center;
+    }
+
+    html, body {
+    overflow-x: hidden;
+}
+.popup-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.row{
+  width: 1000px;
+}
+.btnRight{
+  display: inline-block; 
+  margin-left: 5px; 
+}
+
+  </style>
+</head>
+<body>
+<div class="popup-content">
+  <div class="" >
+      <div class="row">
+          <div class="col-6" >
+              <table class="table table-sm table-dark  align-middle">
+                  <thead>
+                    <tr>
+                      <th scope="col">Action</th>
+                      <th scope="col" class="text-center">Sound</th>
+                      <th scope="col" class="text-center">Notification</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- <tr>
+                      <tr>
+                          <th title="Enable this if you only want attention if Crime + Gta + Kill are ready at the same time" scope="row">
+                            Ranking 
+                            <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5"/>
+                            <path d="M12 17V11" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="1" cy="1" r="1" transform="matrix(1 0 0 -1 11 9)" fill="white"/>
+                            </svg></th>
+                          <td><input id="sRank" type="checkbox"></td>
+                          <td><input id="nRank" type="checkbox"></td>
+                        </tr>
+                      <th scope="row">Crime</th>
+                      <td><input id="sCrime" type="checkbox"></td>
+                      <td><input id="nCrime" type="checkbox"></td>
+                    </tr> -->
+                    <tr>
+                      <th scope="row">GTA</th>
+                      <td><input id="sGTA" type="checkbox"></td>
+                      <td><input id="nGta" type="checkbox"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Kill practice</th>
+                      <td><input id="sKillP" type="checkbox"></td>
+                      <td><input id="nKillP" type="checkbox"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Running</th>
+                      <td><input id="sRunner" type="checkbox"></td>
+                      <td><input id="nRunner" type="checkbox"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Driving lesson</th>
+                      <td><input id="sDrive" type="checkbox"></td>
+                      <td><input id="nDrive" type="checkbox"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Fly</th>
+                      <td><input id="sFly" type="checkbox"></td>
+                      <td><input id="nFly" type="checkbox"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Duo</th>
+                      <td><input id="sDuo" type="checkbox"></td>
+                      <td><input id="nDuo" type="checkbox"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Junks</th>
+                      <td><input id="sJunks" type="checkbox"></td>
+                      <td><input id="nJunks" type="checkbox"></td>
+                    </tr>
+                    
+                  </tbody>
+              
+                </table>
+          </div>
+          <div class="col-6 text-white">
+            <div class="flex">
+              <label class="flex-fill" >Choose a sound:
+                <select  class="form-control " name="sounds" id="sounds" style="width: 270px">
+                  <option value="tokPath">Tok</option>
+                  <option value="beepPath">beep</option>
+                  <option id="userSound" value="userSound">userSound</option>
+                </select> 
+              </label>
+              <div class="btn btn-primary btnRight float-right flex-fill" id="selectSound">Select sound</div>
+            </div>
+            
+
+            <label>
+              Upload a sound (mp3)
+              <input class="form-control" type="file" id="soundFileInput"> 
+            </label>
+          <div class="btn btn-primary" id="saveSoundButton">Save Sound</div>
+        </div>
+      </div>
+    </div>
+       <script src="popup.js"></script>
+
+</div>
+  
+</body>
+</html>

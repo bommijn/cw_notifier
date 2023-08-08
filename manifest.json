@@ -1,0 +1,38 @@
+{
+  "manifest_version": 2,
+  "name": "camorra world alerter",
+  "version": "1.0",
+  "description": "Reads incomming requests from camorraWorld and notifies you when action needs to be taken.",
+
+  "permissions": ["webRequest", 
+  "<all_urls>", 
+  "webRequestBlocking",
+  "tabs", 
+  "notifications", 
+  "scripting",
+  "storage"],
+
+  "icons": {
+    "48":"icons/cw48.png",
+    "96":"icons/cw96.png"
+  },
+
+  "background": {
+    "scripts": ["startup.js", "timeNotifier.js"],
+    "persistent": true
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://camorra.world/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "options_ui": {
+    "page": "popup/popup.html",
+    "open_in_tab": true
+  },
+  "browser_action": {
+    "default_title": "Cw notifier"
+  }
+}
