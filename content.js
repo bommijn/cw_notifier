@@ -5,7 +5,15 @@ audio.addEventListener("canplay", (event) => {
   audio.play();
 
 });
-port.onMessage.addListener(function(event) {
+
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "getUsername") {
+    sendResponse({ username: getUsernameFromInterface() });
+  }
+});
+
+
+port.onMessage.addListener(function() {
   browser.storage.local.get("chosenSound").then(setting =>{
     browser.storage.local.get(setting.chosenSound).then(path =>{
       if(setting.chosenSound == "userSound")
@@ -18,3 +26,9 @@ port.onMessage.addListener(function(event) {
     
   });
 
+
+  function getUsernameFromInterface(){
+    let iconElement = document.querySelector('i.ion-person');
+    let text = iconElement.parentElement.textContent.trim();
+    return text;
+}

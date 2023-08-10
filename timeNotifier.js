@@ -35,6 +35,11 @@ let announcementDict = {};
 let notificationAnnouncements = [];
 let soundAnnouncements = [];
 
+/**
+ * contains the tabIds matched with the username of the account for that tab.
+ */
+let tabDict = {};
+
 //variable and place to connect the port from the content sctipt.
 let portFromCS;
 let settingsPort;
@@ -120,16 +125,18 @@ browser.webRequest.onBeforeRequest.addListener(
 );
 
 // Event handler for onCompleted
-function handleCompletedRequest(requestDetails) {
-    getResponse(requestDetails.requestId);
+function handleCompletedRequest(requestDetails) {    
+    getResponse(requestDetails.requestId, requestDetails.tabId);
 }
 
-function getResponse(id) {
-    let filter = browser.webRequest.filterResponseData(id);
+function getResponse(requestId, tabId) {
+    let filter = browser.webRequest.filterResponseData(requestId);
     filter.ondata = (event) => {
         let decoder = new TextDecoder("utf-8");
         let str = decoder.decode(event.data, { stream: true });
-        parseIndexJson(str);
+        let json = JSON.parse(str);
+        announceItems(json, tabId)
+
         filter.write(event.data);
     };
 
@@ -138,20 +145,24 @@ function getResponse(id) {
     };
 }
 
-function parseIndexJson(dataString) {
-    console.log("doing response");
 
-    let json = JSON.parse(dataString);
+function announceItems(json, tabId){
+    //check if tab has known username
+    let username = tabDict[tabId]
+    if( username == null)    
+        username = requestUsername(tabId);
+
     let currentTimestamp = Math.floor(Date.now() / 1000);
     //loop over all timestamp entries 
     for (const [event, timestamp] of Object.entries(json.data.timestamps)) {
-        let hasNotifiedForCurrent = announcementDict[event] != null && announcementDict[event] == timestamp;
+        let announceKey = event + username;
+        let hasNotifiedForCurrent = announcementDict[announceKey] != null && announcementDict[announceKey] == timestamp;
         //check if we need to do an action
         if (timestamp < currentTimestamp &&
             !hasNotifiedForCurrent) {
-
+            console.log("doing event", event, username);
             //add to dict so we dont repeat it for the same event.
-            announcementDict[event] = timestamp;
+            announcementDict[announceKey] = timestamp;
 
             //handle sound
             if(soundAnnouncements.includes(event)){
@@ -160,43 +171,37 @@ function parseIndexJson(dataString) {
 
             //handle notification
             if(notificationAnnouncements.includes(event)){
-                makeNotification(event);
+                makeNotification(event, username);
             }
         }
     }
-    handleRanking(json);
 }
 
-function handleRanking(json){
-
-    if(!soundAnnouncements.includes("rank") && !notificationAnnouncements.includes("rank"))
-        return;
-    let timeNow = Math.floor(Date.now() / 1000);
-    let rankSkills = [json.data.timestamps["gta"], json.data.timestamps["crime"], json.data.timestamps["kill_practice"]]; 
-    let hasNotifiedForCurrent = announcementDict["rank"] != null && announcementDict["rank"] < timeNow;
-    //check if all timestamps have passed for the rankskills
-    for(let time of rankSkills){
-        if(time > timeNow)
-        return;
-    }
-    if(!hasNotifiedForCurrent){
-        if(soundAnnouncements.includes("rank"))
-            makeSound("rank");
-        if(notificationAnnouncements.includes("rank"))
-            makeNotification("rank");
-
-        announcementDict["rank"] = timeNow;
-    }
-}
-
-function makeNotification(event){
+function makeNotification(event, username){
     browser.notifications.create({
         type: "basic",
-        title: " Action available",
+        title: username + " action required",
         message: "Event: " + event + " is ready to be performed",
     });
 }
 
 function makeSound(event){
     portFromCS.postMessage(event);
+}
+
+
+/**
+ * Gets the username of the logged in user for the given tab.
+ * @param {int} tabId 
+ */
+function requestUsername(tabId){
+    browser.tabs.sendMessage(tabId, { action: "getUsername" })
+    .then(response => {
+        tabDict[tabId] = response.username;
+        return response.username;
+    })
+    .catch(error => {
+      console.error("Error sending message:", error);
+      return null;
+    });
 }
