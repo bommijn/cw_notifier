@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "camorra world alerter",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Reads incomming requests from camorraWorld and notifies you when action needs to be taken.",
 
   "permissions": ["webRequest", 
