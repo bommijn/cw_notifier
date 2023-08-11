@@ -149,8 +149,10 @@ function getResponse(requestId, tabId) {
 function announceItems(json, tabId){
     //check if tab has known username
     let username = tabDict[tabId]
-    if( username == null)    
+    if( username == null){
         username = requestUsername(tabId);
+        if(username == null) return;
+    }
 
     let currentTimestamp = Math.floor(Date.now() / 1000);
     //loop over all timestamp entries 
