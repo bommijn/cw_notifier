@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
   "name": "camorra world alerter",
-  "version": "1.11",
+  "version": "1.13",
   "description": "Reads incomming requests from camorraWorld and notifies you when action needs to be taken.",
 
   "permissions": ["webRequest", 
-  "<all_urls>", 
+  "https://www.camorraworld.com/*", 
   "webRequestBlocking",
   "tabs", 
   "notifications", 
@@ -27,6 +27,7 @@
       "matches": ["https://www.camorraworld.com/*"],
       "js": ["content.js"]
     }
+
   ],
   "options_ui": {
     "page": "popup/popup.html",
