@@ -146,13 +146,12 @@ function getResponse(requestId, tabId) {
 }
 
 
-function announceItems(json, tabId){
+async function announceItems(json, tabId){
     //check if tab has known username
     let username = tabDict[tabId]
-    if( username == null){
-        username = requestUsername(tabId);
-        if(username == null) return;
-    }
+    if( username == null)
+        username = await requestUsername(tabId);
+    
 
     let currentTimestamp = Math.floor(Date.now() / 1000);
     //loop over all timestamp entries 
@@ -197,13 +196,15 @@ function makeSound(event){
  * @param {int} tabId 
  */
 function requestUsername(tabId){
+   return new Promise((resolve, reject) => {
     browser.tabs.sendMessage(tabId, { action: "getUsername" })
     .then(response => {
         tabDict[tabId] = response.username;
-        return response.username;
+        resolve(response.username);
     })
     .catch(error => {
       console.error("Error sending message:", error);
-      return null;
+      reject(null);
     });
+   }) 
 }
